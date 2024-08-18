@@ -22,3 +22,7 @@ def librarian_view(request):
 @role_required('Member')
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
