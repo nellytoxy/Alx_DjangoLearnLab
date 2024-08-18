@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import list_books, LibraryDetailView
+from .views import list_books, LibraryDetailView, register
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
