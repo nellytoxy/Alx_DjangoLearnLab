@@ -29,7 +29,7 @@ def register(request):
             return redirect('home')  # Redirect to a 'home' page after successful registration
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 # User Login View
 def user_login(request):
