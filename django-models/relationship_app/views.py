@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 def role_required(role):
     def in_roles(user):
         return user.userprofile.role == role
-    return user_passes_test(in_roles)
+    return @user_passes_test(in_roles)
 
 @login_required
 @role_required('Admin')

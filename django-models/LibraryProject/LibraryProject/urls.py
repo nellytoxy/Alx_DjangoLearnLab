@@ -28,7 +28,3 @@ urlpatterns = [
     path('register/', register, name='register'),
 ]
 
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
