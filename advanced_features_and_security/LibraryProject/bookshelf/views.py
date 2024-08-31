@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseForbidden
 from models import Book
 from django.http import HttpResponse
+from .forms import ExampleForm
 
 @login_required
 @permission_required('myapp.can_view_mymodel', raise_exception=True)
@@ -56,6 +57,16 @@ def my_view(request):
     response['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self';"
     return response
 
+# 
+
+def search_books(request):
+    form = BookSearchForm(request.GET)
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.none()
+    return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})
 
 
 
