@@ -140,14 +140,24 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Ensure DEBUG is set to False in production
 DEBUG = False
 
-# Configure security settings for browsers
-SECURE_BROWSER_XSS_FILTER = True
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Set HTTP Strict Transport Security (HSTS) policy
+SECURE_HSTS_SECONDS = 31536000  # One year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Ensure that cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Secure headers to further enhance security
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
 
-# Ensure cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 # Ensure that secure HTTP headers are used
 SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS

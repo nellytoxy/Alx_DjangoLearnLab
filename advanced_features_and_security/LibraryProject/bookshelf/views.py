@@ -60,7 +60,7 @@ def my_view(request):
 # 
 
 def search_books(request):
-    form = BookSearchForm(request.GET)
+    form = ExampleForm(request.GET)
     if form.is_valid():
         query = form.cleaned_data['query']
         books = Book.objects.filter(title__icontains=query)
