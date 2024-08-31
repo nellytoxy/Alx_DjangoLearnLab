@@ -28,6 +28,20 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
     objects = CustomUserManager()
+    
+from django.db import models
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        permissions = [
+            ("can_view_mymodel", "Can view MyModel"),
+            ("can_create_mymodel", "Can create MyModel"),
+            ("can_edit_mymodel", "Can edit MyModel"),
+            ("can_delete_mymodel", "Can delete MyModel"),
+        ]
+
 
     def __str__(self):
         return self.username
