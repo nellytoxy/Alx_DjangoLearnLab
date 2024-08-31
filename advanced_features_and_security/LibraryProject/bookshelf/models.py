@@ -31,7 +31,7 @@ class CustomUser(AbstractUser):
     
 from django.db import models
 
-class MyModel(models.Model):
+class Book(models.Model):
     name = models.CharField(max_length=100)
 
     class Meta:
