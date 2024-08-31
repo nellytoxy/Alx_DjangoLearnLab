@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib import admin
 from .models import Book
 
-@admin.register(Book)
+@admin.register(Book)admin.site.register(CustomUser, CustomUserAdmin)
 class BookAdmin(admin.ModelAdmin):
     # Fields to display in the list view
     list_display = ('title', 'author', 'published_date')
