@@ -34,8 +34,8 @@ def delete_mymodel(request, pk):
     instance = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         instance.delete()
-        return redirect('myapp:mymodel_list')
-    return render(request, 'myapp/delete_mymodel.html', {'instance': instance})
+        return redirect('book_list", "books')
+    return render(request, 'advanced_features_and_security/delete_book.html', {'instance': instance})
 
 
 # Create your views here.
