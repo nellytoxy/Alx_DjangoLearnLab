@@ -50,7 +50,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
+
+# Define your CSP policy
+CSP_POLICY = {
+    'default-src': ["'self'"],
+    'script-src': ["'self'", 'https://trusted.cdn.com'],
+    'style-src': ["'self'", 'https://trusted.cdn.com'],
+    # Add other CSP rules as needed
+}
 
 ROOT_URLCONF = 'LibraryProject.urls'
 
@@ -125,5 +134,39 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+# settings.py
+
+# Ensure DEBUG is set to False in production
+DEBUG = False
+
+# Configure security settings for browsers
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Ensure cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Ensure that secure HTTP headers are used
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
+
+# settings.py
+
+# Set a strong, unique key
+SECRET_KEY = 'your-unique-secret-key'  # Replace with a real secret key
+
+# Set allowed hosts to your domain
+ALLOWED_HOSTS = ['yourdomain.com']
+
+# Define your Content Security Policy (CSP) settings if using django-csp
+# CSP_POLICY = {
+#     'default-src': ["'self'"],
+#     'script-src': ["'self'", 'https://trusted.cdn.com'],
+#     'style-src': ["'self'", 'https://trusted.cdn.com'],
+#     # Add other CSP rules as needed
+# }
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
