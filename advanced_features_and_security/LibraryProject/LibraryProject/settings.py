@@ -148,6 +148,8 @@ SECURE_SSL_REDIRECT = True
 SECURE_HSTS_SECONDS = 31536000  # One year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+SECURE_PROXY_SSL_HEADER = True
+
 
 # Ensure that cookies are only sent over HTTPS
 SESSION_COOKIE_SECURE = True
@@ -156,7 +158,8 @@ CSRF_COOKIE_SECURE = True
 # Secure headers to further enhance security
 X_FRAME_OPTIONS = 'DENY'
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
+SECURE_BROWSER_XSS_FILTER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 
 # Ensure that secure HTTP headers are used
