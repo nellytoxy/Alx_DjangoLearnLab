@@ -9,11 +9,11 @@ urlpatterns = [
     path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),
 ]
 urlpatterns = [
-    path('book/add/', BookCreateView.as_view(), name='book_add'),
+    path('book/create/', BookCreateView.as_view(), name='book_add'),
 ]
 urlpatterns = [
-    path('book/<int:pk>/edit/', BookUpdateView.as_view(), name='book_edit'),
+    path('book/update/', BookUpdateView.as_view(), name='book_edit'),
 ]
 urlpatterns = [
-    path('book/<int:pk>/delete/', BookDeleteView.as_view(), name='book_delete'),
+    path('book/delete/', BookDeleteView.as_view(), name='book_delete'),
 ]
