@@ -50,35 +50,31 @@ class BookUpdateView(UpdateView):
 class BookDeleteView(DeleteView):
     model = Book
     template_name = 'book_confirm_delete.html'
-    success_url = reverse_lazy('book_list')  
+    success_url = reverse_lazy('book_list') 
 
         
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
 from .seriealizers import BookSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-class BookListCreateView(generics.ListCreateAPIView):
-    """
-    API view to list all books or create a new book.
-    - **GET /books/**: Retrieve a list of all books.
-    - **POST /books/**: Create a new book instance. Requires authentication.
-    """
+class BookCreateView(generics.CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Only authenticated users can create books
 
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    API view to retrieve, update, or delete a book instance.
-    - **GET /books/<int:pk>/**: Retrieve a single book by ID.
-    - **PUT /books/<int:pk>/**: Update an existing book instance. Requires authentication.
-    - **DELETE /books/<int:pk>/**: Delete a book instance. Requires authentication.
-    """
+class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update books
 
+class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Only authenticated users can delete books
 
-
-# Create your views here.
+# If you want to add a view for listing books that is read-only
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Authenticated users can update, unauthenticated users can only read
