@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 import django_filters
 from django_filters import rest_framework
 from .models import Book
-from .seriealizers import BookSerializer
+from .serializers import BookSerializer
 from .filters import BookFilter
 
 
@@ -29,6 +29,11 @@ class BookUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
 class BookDeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+
+class BookDetailView(generics.DetailAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
