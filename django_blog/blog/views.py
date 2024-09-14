@@ -148,3 +148,24 @@ def delete_comment(request, comment_id):
             comment.delete()
             return redirect(reverse('post_detail', kwargs={'pk': comment.post.id}))
     return redirect(reverse('post_detail', kwargs={'pk': comment.post.id}))
+
+from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView
+from .models import Comment
+from .forms import CommentForm
+
+@method_decorator(login_required, name='dispatch')
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = self.kwargs['post_id']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', args=[self.kwargs['post_id']])
