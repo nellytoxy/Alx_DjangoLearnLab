@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Post
+from django import forms
+from .models import Post, Tag
+
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -16,16 +19,17 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
-        
 
-from django import forms
-from .models import Comment
 
-class CommentForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple
+    )
+
     class Meta:
-        model = Comment
-        fields = ['content']  # Fields to be included in the form
+        model = Post
+        fields = ['title', 'content', 'tags']
 
-        widgets = {
-            'content': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Add your comment here...'}),
-        }
+

@@ -5,6 +5,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import CustomUserCreationForm
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Post
 
 def register(request):
     if request.method == 'POST':
@@ -191,3 +194,14 @@ class CommentDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('post_detail', args=[self.object.post.id])
+
+
+def search_posts(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.none()
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
