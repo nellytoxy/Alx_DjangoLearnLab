@@ -4,10 +4,11 @@ from .views import post_detail, CommentCreateView, CommentUpdateView, CommentDel
 urlpatterns = [
    
     # URL pattern for creating a new comment on a specific post
-    path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
-    
+   
     # URL pattern for updating a specific comment
     path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update'),
+    
+    path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
     
     # URL pattern for deleting a specific comment
     path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
