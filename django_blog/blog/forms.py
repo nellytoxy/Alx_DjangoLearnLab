@@ -42,4 +42,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'tags']
 
+from django import forms
+from .models import Tag
+
+class TagWidget(forms.CheckboxSelectMultiple):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Additional customization here if needed
 
