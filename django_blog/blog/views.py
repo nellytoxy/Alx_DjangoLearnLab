@@ -169,3 +169,25 @@ class CommentCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy('post_detail', args=[self.kwargs['post_id']])
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    
+    def get_queryset(self):
+        return Comment.objects.filter(author=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', args=[self.object.post.id])
+
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_queryset(self):
+        return Comment.objects.filter(author=self.request.user)
+
+    def get_success_url(self):
+        return reverse_lazy('post_detail', args=[self.object.post.id])
