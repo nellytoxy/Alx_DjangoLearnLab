@@ -2,7 +2,7 @@ from django.urls import path
 from .views import post_detail, CommentCreateView, CommentUpdateView, CommentDeleteView
 
 urlpatterns = [
-    # URL pattern for viewing details of a specific post
+    # URL pattern for viewing the details of a specific post
     path('posts/<int:pk>/', post_detail, name='post_detail'),
     
     # URL pattern for creating a new comment on a specific post
