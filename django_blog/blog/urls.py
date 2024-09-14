@@ -6,7 +6,7 @@ urlpatterns = [
     # URL pattern for creating a new comment on a specific post
    
     # URL pattern for updating a specific comment
-    path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update'),
+    path("comments/<int:pk>/update/", CommentUpdateView.as_view(), name='comment_update'),
     
     path('posts/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment_create'),
     
