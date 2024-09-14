@@ -43,7 +43,7 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content', 'tags']
 from django import forms
 from .models import Post, Tag
-from .widgets import TagWidget  # Import your custom widget
+from .widgets import TagWidget()  # Import your custom widget
 
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
@@ -52,6 +52,9 @@ class PostForm(forms.ModelForm):
         required=False
     )
 
+class TagWidget(forms.CheckboxSelectMultiple):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
