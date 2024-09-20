@@ -5,6 +5,19 @@ from .models import Post, Like
 from notifications.models import Notification
 from django.contrib.contenttypes.models import ContentType  # Import ContentType for notifications
 
+from rest_framework import viewsets
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
 class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
