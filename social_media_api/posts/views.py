@@ -1,51 +1,34 @@
-from django_filters import rest_framework as filters  # Add this import
-from rest_framework import viewsets, permissions
-from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
 from rest_framework import generics, permissions
-from .models import Post
-from .serializers import PostSerializer
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Post, Like
+from notifications.models import Notification
+from .serializers import PostSerializer  # Ensure you import your PostSerializer
 
-
-class PostFilter(filters.FilterSet):
-    title = filters.CharFilter(lookup_expr='icontains')
-    content = filters.CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = Post
-        fields = ['title', 'content']
-
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filterset_class = PostFilter  # Make sure to reference the PostFilter here
-
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-    def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+class LikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        # Create or get a Like object
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
 
-    def get_queryset(self):
-        return Comment.objects.filter(author=self.request.user)
+        if created:  # If the Like was created, generate a notification
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target_content_type= ContentType.objects.get_for_model(Post),
+                target_object_id=post.id,
+            )
+            return Response({"message": "Post liked."}, status=201)
 
-class FeedView(generics.ListAPIView):
+        return Response({"message": "Already liked."}, status=400)
+
+class UnlikePostView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = PostSerializer
 
-    def get_queryset(self):
-        # Get the current user
-        user = self.request.user
-        # Get users that the current user is following
-        following_users = user.following.all()
-        # Return posts from those users, ordered by creation date
-        return Post.objects.filter(author__in=following_users).order_by('-created_at')
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        Like.objects.filter(user=request.user, post=post).delete()
+        return Response({"message": "Post unliked."}, status=204)
