@@ -1,11 +1,21 @@
+from django_filters import rest_framework as filters  # Add this import
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
+
+class PostFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains')
+    content = filters.CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filterset_class = PostFilter  # Make sure to reference the PostFilter here
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -23,21 +33,3 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Comment.objects.filter(author=self.request.user)
-    
-    from django_filters import rest_framework as filters
-
-class PostFilter(filters.FilterSet):
-    title = filters.CharFilter(lookup_expr='icontains')
-    content = filters.CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = Post
-        fields = ['title', 'content']
-
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filterset_class = PostFilter
-
-
